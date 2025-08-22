@@ -1,0 +1,43 @@
+{% extends 'ticketing/base.html' %}
+{% block content %}
+<h2>Confirmed Tickets</h2>
+
+<form method="get">
+  <input type="text" name="q" placeholder="Search by name, SRN, PRN or organiser" value="{{ query }}">
+  <button type="submit">Search</button>
+</form>
+
+<table border="1" cellpadding="5" cellspacing="0">
+  <thead>
+    <tr>
+      <th>Student Name</th>
+      <th>SRN</th>
+      <th>PRN</th>
+      <th>Email</th>           <!-- Added -->
+      <th>Phone</th>           <!-- Added -->
+      <th>Confirmed By</th>
+      <th>Confirmed At</th>
+      <th>Payment Type</th>
+      <th>UTR Number</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for ticket in tickets %}
+    <tr>
+      <td>{{ ticket.student.name }}</td>
+      <td>{{ ticket.student.srn }}</td>
+      <td>{{ ticket.student.prn }}</td>
+      <td>{{ ticket.student.email }}</td>     <!-- Added -->
+      <td>{{ ticket.student.phone }}</td>     <!-- Added -->
+      <td>{{ ticket.confirmed_by.username }}</td>
+      <td>{{ ticket.confirmed_at|date:"Y-m-d H:i" }}</td>
+      <td>{{ ticket.payment_type }}</td>
+      <td>{{ ticket.utr_number }}</td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="9">No confirmed tickets found.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% endblock %}

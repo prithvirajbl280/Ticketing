@@ -1,0 +1,17 @@
+{% extends 'ticketing/base.html' %}
+{% block content %}
+<h2>Search Student Registrations</h2>
+<form method="get">
+  <input type="text" name="q" placeholder="Enter SRN or Name" value="{{ query }}">
+  <button type="submit">Search</button>
+</form>
+<ul>
+  {% for reg in registrations %}
+  <li>{{ reg.name }} - {{ reg.srn }} - 
+    <a href="{% url 'registration_detail' reg.id %}">View Details</a>
+  </li>
+  {% empty %}
+  <li>No results.</li>
+  {% endfor %}
+</ul>
+{% endblock %}

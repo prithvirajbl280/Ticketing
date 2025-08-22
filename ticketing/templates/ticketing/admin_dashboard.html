@@ -1,0 +1,61 @@
+{% extends 'ticketing/base.html' %}
+{% block content %}
+<h2>Admin Dashboard</h2>
+<p>Total Tickets Confirmed: {{ total_tickets }} 
+  <a href="{% url 'confirmed_tickets_list' %}">View</a>
+</p>
+
+
+<h3>Tickets Confirmed by Organisers</h3>
+<table>
+  <tr><th>Organiser</th><th>Tickets Confirmed</th></tr>
+  {% for item in tickets_per_organiser %}
+  <tr><td>{{ item.confirmed_by__username }}</td><td>{{ item.count }}</td></tr>
+  {% endfor %}
+</table>
+
+<p>
+    <a href="{% url 'organiser_cash_daywise' %}">View Cash Collected Day-wise</a>
+</p>
+
+
+
+
+<h3>Ticket Confirmation Trend Over Time</h3>
+<canvas id="confirmationChart" width="600" height="300"></canvas>
+
+<form action="{% url 'logout' %}" method="post" style="display:inline;">
+  {% csrf_token %}
+  <button type="submit">Logout</button>
+</form>
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+fetch("{% url 'ticket_confirmation_data' %}")
+.then(response => response.json())
+.then(data => {
+  const ctx = document.getElementById('confirmationChart').getContext('2d');
+  new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: data.labels,
+      datasets: [{
+        label: 'Tickets Confirmed',
+        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+        borderColor: 'rgba(75, 192, 192, 1)',
+        data: data.counts,
+        fill: true,
+      }]
+    },
+    options: {
+      scales: {
+        x: { display: true, title: { display: true, text: 'Date' } },
+        y: { beginAtZero: true, title: { display: true, text: 'Tickets Confirmed' } }
+      }
+    }
+  });
+});
+</script>
+
+{% endblock %}

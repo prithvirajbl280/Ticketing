@@ -1,0 +1,27 @@
+{% extends 'ticketing/base.html' %}
+
+{% block content %}
+<h2>Organiser Cash Collection (Day-wise)</h2>
+<table border="1" cellpadding="5" cellspacing="0">
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Organiser</th>
+            <th>Tickets Collected (Cash)</th>
+            <th>Total Cash Collected (₹)</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for row in summary %}
+        <tr>
+            <td>{{ row.day }}</td>
+            <td>{{ row.confirmed_by__username }}</td>
+            <td>{{ row.cash_count }}</td>
+            <td>{{ row.total_cash }}</td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="4">No cash collections found.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

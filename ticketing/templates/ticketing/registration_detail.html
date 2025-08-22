@@ -1,0 +1,37 @@
+{% extends 'ticketing/base.html' %}
+
+{% block content %}
+<h2>Student Details</h2>
+<p><strong>Name:</strong> {{ registration.name }}</p>
+<p><strong>SRN:</strong> {{ registration.srn }}</p>
+<p><strong>PRN:</strong> {{ registration.prn }}</p>
+<p><strong>Email:</strong> {{ registration.email }}</p>
+<p><strong>Phone:</strong> {{ registration.phone }}</p>
+<p><strong>Year:</strong> {{ registration.year }}</p>
+
+
+<h3>Ticket Confirmation</h3>
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  
+  <script>
+    function toggleUtrField() {
+      const paymentType = document.getElementById("id_payment_type").value;
+      const utrField = document.getElementById("div_id_utr_number");
+      if (paymentType === "UPI") {
+        utrField.style.display = "block";
+      } else {
+        utrField.style.display = "none";
+        document.getElementById("id_utr_number").value = "";
+      }
+    }
+    document.addEventListener("DOMContentLoaded", function() {
+      toggleUtrField();
+      document.getElementById("id_payment_type").addEventListener("change", toggleUtrField);
+    });
+  </script>
+
+  <button type="submit">Confirm</button>
+</form>
+{% endblock %}
