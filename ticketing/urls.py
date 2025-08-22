@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+from .views import thank_you
 
 
 urlpatterns = [
@@ -13,6 +14,7 @@ urlpatterns = [
     path('organiser/registration/<int:registration_id>/', views.registration_detail, name='registration_detail'),
     path('custom_admin/dashboard/confirmed-tickets/', views.confirmed_tickets_list, name='confirmed_tickets_list'),
     path('custom_admin/dashboard/organiser-cash-summary/', views.organiser_cash_daywise, name='organiser_cash_daywise'),
+    path('thank-you/', thank_you, name='thank_you'),
 
 ]
 

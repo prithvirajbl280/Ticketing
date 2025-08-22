@@ -12,6 +12,10 @@ from django.contrib.auth.views import LogoutView
 from django.shortcuts import redirect
 from django.views.decorators.cache import never_cache
 from django.contrib.auth.decorators import login_required, user_passes_test
+from django.db import IntegrityError
+from django.contrib import messages
+from django.shortcuts import render
+
 
 
 
@@ -27,22 +31,22 @@ def is_organiser(user):
 
 
 # Public registration form for students with AJAX support
+@never_cache
 def register_student(request):
     if request.method == "POST":
         form = RegistrationForm(request.POST)
         if form.is_valid():
             form.save()
-            if is_ajax(request):
-                return JsonResponse({'message': 'Registration successful'})
-            else:
-                return render(request, 'ticketing/thank_you.html')
-        else:
-            if is_ajax(request):
-                return JsonResponse({'errors': form.errors}, status=400)
+            return redirect('thank_you')  # Redirect after POST - change URL name accordingly
     else:
         form = RegistrationForm()
-
     return render(request, 'ticketing/registration_form.html', {'form': form})
+
+
+
+
+def thank_you(request):
+    return render(request, 'ticketing/thank_you.html')
 
 
 # Organiser Portal to search registrations (read-only),
@@ -61,6 +65,7 @@ def organiser_search(request):
 
 
 # Organiser confirms tickets
+@never_cache
 @login_required
 @user_passes_test(is_organiser, login_url='no_permission')
 def confirm_ticket(request, registration_id):
@@ -69,13 +74,24 @@ def confirm_ticket(request, registration_id):
     if request.method == 'POST':
         form = TicketConfirmationForm(request.POST)
         if form.is_valid():
-            confirmation = form.save(commit=False)
-            confirmation.student = registration
-            confirmation.confirmed_by = request.user
-            confirmation.save()
-            return redirect('organiser_dashboard')
+            confirmation_exists = TicketConfirmation.objects.filter(student=registration).exists()
+            if confirmation_exists:
+                messages.error(request, "This ticket has already been confirmed.")
+                return redirect('organiser_dashboard')
+
+            try:
+                confirmation = form.save(commit=False)
+                confirmation.student = registration
+                confirmation.confirmed_by = request.user
+                confirmation.save()
+                messages.success(request, "Ticket confirmed successfully.")
+                return redirect('organiser_dashboard')
+            except IntegrityError:
+                messages.error(request, "Duplicate confirmation detected.")
+                return redirect('organiser_dashboard')
     else:
         form = TicketConfirmationForm()
+
     return render(request, 'ticketing/confirm_ticket.html', {'form': form, 'student': registration})
 
 
@@ -135,6 +151,7 @@ def no_permission(request):
     return render(request, 'ticketing/no_permission.html')
 
 
+@never_cache
 @login_required
 @user_passes_test(is_organiser, login_url='no_permission')
 def registration_detail(request, registration_id):
@@ -143,11 +160,21 @@ def registration_detail(request, registration_id):
     if request.method == 'POST':
         form = TicketConfirmationForm(request.POST)
         if form.is_valid():
-            confirmation = form.save(commit=False)
-            confirmation.student = registration
-            confirmation.confirmed_by = request.user
-            confirmation.save()
-            return redirect('organiser_dashboard')
+            confirmation_exists = TicketConfirmation.objects.filter(student=registration).exists()
+            if confirmation_exists:
+                messages.error(request, "This ticket has already been confirmed.")
+                return redirect('organiser_dashboard')
+
+            try:
+                confirmation = form.save(commit=False)
+                confirmation.student = registration
+                confirmation.confirmed_by = request.user
+                confirmation.save()
+                messages.success(request, "Ticket confirmed successfully.")
+                return redirect('organiser_dashboard')
+            except IntegrityError:
+                messages.error(request, "Duplicate confirmation detected.")
+                return redirect('organiser_dashboard')
     else:
         form = TicketConfirmationForm()
 
@@ -155,7 +182,6 @@ def registration_detail(request, registration_id):
         'registration': registration,
         'form': form,
     })
-
 
 
 
