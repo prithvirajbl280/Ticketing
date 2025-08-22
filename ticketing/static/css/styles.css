@@ -1,21 +1,34 @@
 body {
     margin: 0;
-    display: flex;
-    margin-top: 100px;
-    align-items: center;         /* vertical center */
     background-color: #fefefe;
     font-family: Arial, sans-serif;
+    min-height: 100vh;
 }
+/* Equivalent to .container in Bootstrap */
+.container {
+    width: 100%;
+    padding-right: 12px;
+    padding-left: 12px;
+    margin-right: auto;
+    margin-left: auto;
+    /* Responsive max-widths (optional if using Bootstrap) */
+    max-width: 100%;
+}
+
+/* Equivalent to .mt-4 in Bootstrap */
+.mt-4 {
+    margin-top: 1.5rem !important;  /* 24px */
+}
+
 
 .center-parent {
-    min-height: 100vh;
     display: flex;
-    flex-direction: column;
-    justify-content: center;    /* vertical center */
-    align-items: center;        /* horizontal center */
+    flex-direction: column;      /* stack children vertically */
+    align-items: center;         /* horizontal center for all children */
+    margin-top: 100px;           /* top margin for the whole block */
+    height: 100%;
 }
 
-/* Outer box styles */
 .center-box {
     background: white;
     padding: 32px 32px 24px 32px;
@@ -24,9 +37,9 @@ body {
     min-width: 320px;
     max-width: 360px;
     width: 100%;
+    margin-top: 16px;            /* space between heading and box */
 }
 
-/* Remove extra box styling from form to avoid overlap */
 form {
     background: none;
     padding: 0;
@@ -311,3 +324,195 @@ button.btn-primary:hover {
 .confirmation-form button:hover {
   background-color: #2980b9;
 }
+
+.total-tickets-box > div:nth-child(1) {
+  width: 60%;      /* first column fixed width */
+  text-align: center;
+  padding-right: 10px;
+  border-right: 1px solid #ccc;  /* light gray vertical separator */
+}
+
+.total-tickets-box > div:nth-child(2) {
+  width: 20%;      /* second column */
+  font-weight: 600;
+  font-size: 1.2rem;
+  text-align: center;
+  border-right: 1px solid #ccc;  /* light gray vertical separator */
+}
+
+.total-tickets-box > div:nth-child(3) {
+  width: 10%;      /* third column */
+  text-align: center;
+  margin-left: 25px;
+  
+}
+
+.total-tickets-box {
+  
+  gap: 10px;
+  padding: 12px 24px;
+  border: 1px solid #292828;
+  border-radius: 6px;
+  min-width: 600px;
+  align-items: center;
+}
+
+.total-tickets-box .label {
+  font-weight: normal;
+  font-size: 1rem;
+}
+
+.total-tickets-box .count {
+  font-weight: 600;
+  font-size: 1.2rem;
+}
+
+.center-heading {
+  text-align: center;
+}
+
+
+.organiser-table {
+  max-width: 600px;
+  width: 100%;
+  border: #151515;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.organiser-table td {
+  text-align: center;      /* Horizontal center */
+  vertical-align: middle;  /* Vertical center */
+}
+
+.chart-wrapper {
+  max-width: 600px;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  border: 2px solid #151515; /* solid border with your specified color */
+  padding: 10px;             /* optional padding inside the border */
+  border-radius: 8px;        /* optional rounded corners */
+  box-sizing: border-box;    /* ensures padding and border are inside the width */
+}
+
+
+.logout-btn-wrapper {
+  margin-top: 40px;
+  max-width: 200px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  display: block; /* Ensure the div behaves like a block container */
+}
+
+
+.cash-collected-link a {
+  display: inline-block;
+  padding: 6px 16px;
+  font-size: 0.9rem;
+  border-radius: 6px;
+  border: 1px solid #0d6efd;   /* Bootstrap primary color */
+  color: #0d6efd;
+  text-decoration: none;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  margin-bottom: 30px;
+}
+
+.cash-collected-link a:hover, {
+  background-color: #0d6efd;
+  color: white;
+  text-decoration: none;
+}
+
+/* Center alignment & spacing */
+.cash-collected-link {
+  text-align: center;
+}
+
+
+.custom-table {
+  max-width: 900px;
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+  font-family: Arial, sans-serif;
+  font-size: 1rem;
+  text-align: center;
+  border: #151515;
+}
+
+/* Optional: Center all table cell contents */
+.custom-table th,
+.custom-table td {
+  vertical-align: middle;
+}
+
+/* Optional: style the header */
+.custom-table thead tr {
+  background-color: #007bff; /* Bootstrap primary blue */
+  color: white;
+}
+
+/* Zebra striping */
+.custom-table tbody tr:nth-child(even) {
+  background-color: #c0c3ff;
+}
+
+/* Optional: Reduce padding in the table cells */
+table.table td, table.table th {
+  padding: 0.5rem 0.75rem;
+}
+
+/* Optional: Fix input width if needed */
+form.d-flex input.form-control {
+  max-width: 400px;
+}
+
+
+/* Make search input a bit wider if desired */
+form[role="search"] input.form-control {
+  max-width: 400px;
+  min-width: 200px;
+  border-radius: 0.25rem 0 0 0.25rem;
+}
+
+/* Remove radius on right side of input to align with button */
+form[role="search"] button.btn {
+  border-radius: 0 0.25rem 0.25rem 0;
+}
+
+/* Align button height with input */
+form[role="search"] button.btn {
+  height: 38px;
+}
+
+
+form[role="search"] input.form-control{
+  height: 40px;           /* same height for both */
+  font-size: 1rem;
+  border-radius: 8px;     /* rounded corners */
+  vertical-align: middle; /* align vertically */
+  margin-top: 9px;
+}
+
+form[role="search"] button.btn {
+  width: 100px; 
+  height: 40px;           /* same height for both */
+  font-size: 1rem;
+  border-radius: 8px;     /* rounded corners */
+  vertical-align: middle; /* align vertically */
+}
+
+.download-btn {
+  max-width: 200px;
+  height: 35px;
+  top: 0;
+  right: 0;
+  z-index: 10;
+  position: absolute;
+  margin-top: 95px;
+  margin-right: 50px;
+}
+/* Red logout button is from Bootstrap's btn-danger */
+/* If you want custom styles, add here */
