@@ -1,1 +1,1 @@
-web: gunicorn samarpana_project.wsgi
+web: gunicorn samarpana_project.wsgi --log-file -
