@@ -10,11 +10,10 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'your-default-key')
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('DEBUG', 'False').lower() in ['true', '1', 't']
+DEBUG = os.environ.get('DJANGO_DEBUG', 'False') == 'True'
 
 
-# Set allowed hosts from environment or default to Render app hostname or localhost
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'your-app.onrender.com,localhost').split(',')
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '*').split(',')
 
 
 INSTALLED_APPS = [
@@ -60,13 +59,20 @@ WSGI_APPLICATION = 'samarpana_project.wsgi.application'
 
 
 # Database configuration using dj-database-url for Render
+# DATABASES = {
+#     'default': dj_database_url.config(
+#         default=os.getenv('DATABASE_URL'),  # Render provides DATABASE_URL env var
+#         conn_max_age=600,
+#         ssl_require=True
+#     )
+# }
+
 DATABASES = {
     'default': dj_database_url.config(
-        default=os.getenv('DATABASE_URL'),  # Render provides DATABASE_URL env var
-        conn_max_age=600,
-        ssl_require=True
+        default=os.environ.get('DATABASE_URL')
     )
 }
+
 
 
 AUTH_PASSWORD_VALIDATORS = [
