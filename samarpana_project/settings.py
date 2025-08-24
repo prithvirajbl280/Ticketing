@@ -122,3 +122,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Redirect urls after login/logout
 LOGIN_REDIRECT_URL = '/organiser/dashboard/'
 LOGOUT_REDIRECT_URL = '/accounts/login/'
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://web-production-191d0.up.railway.app",  # Replace with your actual Railway domain
+]
+
